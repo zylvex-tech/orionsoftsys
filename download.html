@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Download MIC Enterprise - Enterprise-grade management software for inventory, staff scheduling, financial reporting, and more.">
+  <meta name="keywords" content="MIC Enterprise, download, management software, inventory, staff scheduling, financial reporting">
+  <meta name="author" content="Orion Soft Systems">
+  <title>Download MIC Enterprise | Orion Soft Systems</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <style>
+    /* Download Page Specific Styles */
+    .download-hero {
+      padding: 10rem 0 4rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .download-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(245, 166, 35, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .download-hero p {
+      font-size: 1.25rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    .product-description {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .product-description p {
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      text-align: center;
+      transition: all var(--transition-base);
+    }
+
+    .feature-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-blue);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .feature-card .feature-icon {
+      margin: 0 auto 1.5rem;
+    }
+
+    .feature-card h4 {
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-card p {
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    .requirements-card {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+    }
+
+    .requirements-card ul {
+      list-style: none;
+      margin: 1.5rem 0 0;
+    }
+
+    .requirements-card li {
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--text-secondary);
+    }
+
+    .requirements-card li:last-child {
+      border-bottom: none;
+    }
+
+    .requirements-card li strong {
+      color: var(--text-primary);
+      min-width: 100px;
+      display: inline-block;
+    }
+
+    .screenshots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .screenshot-placeholder {
+      background: var(--bg-card);
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-md);
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .download-section {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .download-section h2 {
+      margin-bottom: 1rem;
+    }
+
+    .download-section p {
+      margin-bottom: 2rem;
+    }
+
+    .download-form {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .download-form input {
+      flex: 1;
+      padding: 0.875rem 1rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-family: var(--font-primary);
+      font-size: 1rem;
+      transition: all var(--transition-fast);
+    }
+
+    .download-form input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .download-form input:focus {
+      outline: none;
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px var(--focus-ring);
+    }
+
+    .download-note {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .trial-badge {
+      display: inline-block;
+      padding: 0.35rem 1rem;
+      background: rgba(76, 175, 80, 0.1);
+      border: 1px solid rgba(76, 175, 80, 0.2);
+      border-radius: 50px;
+      color: var(--success);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .download-form {
+        flex-direction: column;
+      }
+
+      .download-form .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Page Loader -->
+  <div class="page-loader"><div class="loader-spinner"></div></div>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="index.html" class="navbar-brand" aria-label="Orion Soft Systems Home">
+        <span class="logo-icon" aria-hidden="true"></span>
+        Orion Soft Systems
+      </a>
+      <div class="navbar-menu">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services/index.html">Services</a>
+        <a href="products/orion-ai-assistant.html">Products</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="projects.html">Projects</a>
+        <a href="download.html" class="active">Download</a>
+        <a href="contact.html">Contact</a>
+        <!-- Language Switcher -->
+        <div class="lang-switcher">
+          <button class="lang-switcher-btn" id="langSwitcherBtn" aria-label="Switch language">EN</button>
+          <div class="lang-dropdown" id="langDropdown">
+            <button class="lang-option" data-lang="en">English</button>
+            <button class="lang-option" data-lang="fr">Francais</button>
+            <button class="lang-option" data-lang="es">Espanol</button>
+            <button class="lang-option" data-lang="de">Deutsch</button>
+          </div>
+        </div>
+        <a href="contact.html" class="btn btn-primary">Book a Demo</a>
+      </div>
+      <button class="mobile-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ==================== HERO ==================== -->
+    <section class="download-hero">
+      <div class="container">
+        <div class="download-hero-content">
+          <h1 data-i18n="download_hero_title">Download <span class="text-gradient">MIC Enterprise</span></h1>
+          <p data-i18n="download_hero_subtitle">Enterprise-grade management software built for modern businesses.</p>
+          <span class="trial-badge" data-i18n="download_trial_badge">Start your 14-day free trial. No credit card required.</span>
+          <div class="btn-group">
+            <a href="#download-form" class="btn btn-primary" data-i18n="download_hero_cta">Start 14-Day Free Trial</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PRODUCT DESCRIPTION ==================== -->
+    <section class="section fade-in">
+      <div class="container">
+        <div class="section-header">
+          <h2 data-i18n="download_product_title">What is <span class="text-gradient">MIC Enterprise?</span></h2>
+        </div>
+        <div class="product-description">
+          <p data-i18n="download_desc_1">MIC Enterprise is a comprehensive business management platform designed to streamline operations, reduce overhead, and boost productivity. Built for modern enterprises, it brings together inventory control, staff management, financial tracking, and customer relations into a single, powerful system.</p>
+          <p data-i18n="download_desc_2">Whether you run a single office or a multi-branch organisation, MIC Enterprise gives you real-time visibility into every aspect of your business. With automated reporting, intelligent alerts, and an intuitive interface, your team can focus on what matters most - growing your business.</p>
+          <p data-i18n="download_desc_3">Trusted by businesses across industries, MIC Enterprise has helped companies reduce operational costs by up to 30% while improving accuracy and compliance across all departments.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== FEATURES GRID ==================== -->
+    <section class="section fade-in" style="background: var(--bg-secondary);">
+      <div class="container">
+        <div class="section-header">
+          <h2 data-i18n="download_features_title">Key <span class="text-gradient">Features</span></h2>
+          <p data-i18n="download_features_subtitle">Everything you need to manage your business in one place.</p>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">&#128230;</div>
+            <h4 data-i18n="feature_inventory_title">Inventory Management</h4>
+            <p data-i18n="feature_inventory_desc">Track stock levels, automate reordering, and manage suppliers from a centralised dashboard.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">&#128197;</div>
+            <h4 data-i18n="feature_staffing_title">Staff Scheduling</h4>
+            <p data-i18n="feature_staffing_desc">Create shift rosters, manage leave requests, and optimise workforce allocation effortlessly.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">&#128202;</div>
+            <h4 data-i18n="feature_finance_title">Financial Reporting</h4>
+            <p data-i18n="feature_finance_desc">Generate profit & loss statements, balance sheets, and custom financial reports in seconds.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">&#127970;</div>
+            <h4 data-i18n="feature_multibranch_title">Multi-Branch Support</h4>
+            <p data-i18n="feature_multibranch_desc">Manage multiple locations from a single interface with branch-level permissions and reporting.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">&#128101;</div>
+            <h4 data-i18n="feature_customer_title">Customer Database</h4>
+            <p data-i18n="feature_customer_desc">Store customer profiles, purchase history, and communication logs for personalised service.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon" aria-hidden="true">&#128276;</div>
+            <h4 data-i18n="feature_alerts_title">Automated Alerts</h4>
+            <p data-i18n="feature_alerts_desc">Receive timely notifications for low stock, overdue payments, and critical business events.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SYSTEM REQUIREMENTS ==================== -->
+    <section class="section fade-in">
+      <div class="container">
+        <div class="section-header">
+          <h2 data-i18n="download_requirements_title">System <span class="text-gradient">Requirements</span></h2>
+          <p data-i18n="download_requirements_subtitle">Make sure your system meets the minimum requirements.</p>
+        </div>
+        <div class="requirements-card">
+          <ul>
+            <li><strong data-i18n="req_os_label">OS:</strong> <span data-i18n="req_os_value">Windows 10+, macOS 11+, Linux Ubuntu 20+</span></li>
+            <li><strong data-i18n="req_ram_label">RAM:</strong> <span data-i18n="req_ram_value">4GB minimum, 8GB recommended</span></li>
+            <li><strong data-i18n="req_storage_label">Storage:</strong> <span data-i18n="req_storage_value">500MB available space</span></li>
+            <li><strong data-i18n="req_internet_label">Internet:</strong> <span data-i18n="req_internet_value">Required for cloud features</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SCREENSHOTS ==================== -->
+    <section class="section fade-in" style="background: var(--bg-secondary);">
+      <div class="container">
+        <div class="section-header">
+          <h2 data-i18n="download_screenshots_title">Product <span class="text-gradient">Screenshots</span></h2>
+          <p data-i18n="download_screenshots_subtitle">Take a look at MIC Enterprise in action.</p>
+        </div>
+        <div class="screenshots-grid">
+          <div class="screenshot-placeholder" data-i18n="screenshot_1">Dashboard Overview</div>
+          <div class="screenshot-placeholder" data-i18n="screenshot_2">Inventory Management</div>
+          <div class="screenshot-placeholder" data-i18n="screenshot_3">Financial Reports</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== DOWNLOAD SECTION ==================== -->
+    <section class="section fade-in">
+      <div class="container">
+        <div class="download-section">
+          <h2 data-i18n="download_form_title">Download <span class="text-gradient">MIC Enterprise</span></h2>
+          <p data-i18n="download_form_subtitle">Enter your email to download MIC Enterprise</p>
+          <form class="download-form" id="downloadForm">
+            <input type="email" id="downloadEmail" class="form-control" data-i18n-placeholder="download_email_placeholder" placeholder="Enter your email address" required aria-label="Email address for download">
+            <button type="submit" class="btn btn-primary" data-i18n="download_btn">Download Now</button>
+          </form>
+          <p class="download-note" data-i18n="download_note">Start your 14-day free trial. No credit card required.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== CTA ==================== -->
+    <section class="cta-section fade-in">
+      <div class="container">
+        <h2 data-i18n="download_cta_title">Have Questions About <span class="text-gradient">MIC Enterprise?</span></h2>
+        <p style="font-size: 1.125rem; margin-bottom: 2.5rem;" data-i18n="download_cta_subtitle">Our team is ready to help you get started.</p>
+        <div class="btn-group">
+          <a href="contact.html" class="btn btn-secondary" data-i18n="download_cta_contact">Contact Us</a>
+          <a href="contact.html" class="btn btn-primary" data-i18n="download_cta_demo">Book a Demo</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="navbar-brand">
+            <span class="logo-icon"></span> Orion Soft Systems
+          </a>
+          <p data-i18n="footer_tagline">Building Intelligent Systems for a Smarter Future.</p>
+        </div>
+        <div class="footer-links">
+          <h5 data-i18n="footer_quick_links">Quick Links</h5>
+          <a href="about.html" data-i18n="footer_about">About Us</a>
+          <a href="projects.html" data-i18n="footer_projects">Projects</a>
+          <a href="pricing.html" data-i18n="footer_pricing">Pricing</a>
+          <a href="download.html" data-i18n="footer_download">Download MIC</a>
+          <a href="contact.html" data-i18n="footer_contact">Contact</a>
+        </div>
+        <div class="footer-links">
+          <h5 data-i18n="footer_services_title">Services</h5>
+          <a href="services/web-development.html" data-i18n="service_web_dev">Web Development</a>
+          <a href="services/ai-solutions.html" data-i18n="service_ai_solutions">AI Solutions</a>
+          <a href="services/automation.html" data-i18n="service_automation">Automation</a>
+          <a href="services/custom-software.html" data-i18n="service_custom_software">Custom Software</a>
+        </div>
+        <div class="footer-links">
+          <h5 data-i18n="footer_contact_info">Contact Info</h5>
+          <a href="mailto:hello@orionsoftsystems.com">hello@orionsoftsystems.com</a>
+          <a href="https://wa.me/2348139151102" target="_blank" rel="noopener">WhatsApp: +234 813 915 1102</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p data-i18n="footer_copyright">2026 Orion Soft Systems. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== WHATSAPP FLOATING BUTTON ==================== -->
+  <a href="https://wa.me/2348139151102" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat with us on WhatsApp">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M16.004 0C7.164 0 0 7.163 0 16.004c0 2.823 0.737 5.58 2.137 7.998L0.074 32l8.196-2.05c2.308 1.26 4.92 1.92 7.734 1.92 8.84 0 16.004-7.164 16.004-16.004S24.844 0 16.004 0zm0 26.56c-2.42 0-4.79-0.65-6.87-1.88l-0.49-0.29-5.08 1.34 1.35-4.96-0.32-0.51C3.29 18.16 2.64 15.78 2.64 13.34c0-7.38 6.0-13.38 13.38-13.38s13.38 6.0 13.38 13.38-6.0 13.22-13.4 13.22z"/>
+      <path d="M21.72 18.58c-0.36-0.18-2.14-1.06-2.46-1.18-0.32-0.12-0.56-0.18-0.8 0.18s-0.92 1.18-1.12 1.42c-0.22 0.24-0.44 0.26-0.8 0.08-0.36-0.18-1.52-0.56-2.9-1.78-1.08-0.96-1.8-2.14-2.02-2.5-0.22-0.36-0.02-0.56 0.16-0.74 0.16-0.16 0.36-0.44 0.54-0.64 0.18-0.22 0.24-0.36 0.36-0.62 0.12-0.24 0.06-0.46-0.02-0.64-0.1-0.18-0.8-1.94-1.1-2.64-0.28-0.7-0.58-0.6-0.8-0.62h-0.68c-0.24 0-0.62 0.08-0.94 0.44-0.32 0.36-1.24 1.22-1.24 2.98s1.28 3.46 1.46 3.7c0.18 0.24 2.52 3.86 6.12 5.42 0.86 0.36 1.52 0.58 2.04 0.74 0.86 0.28 1.64 0.24 2.26 0.14 0.68-0.1 2.14-0.88 2.44-1.72 0.3-0.84 0.3-1.56 0.22-1.72-0.1-0.14-0.34-0.22-0.7-0.4z"/>
+    </svg>
+  </a>
+
+  <!-- ==================== CHAT WIDGET ==================== -->
+  <div class="chat-widget">
+    <button type="button" class="chat-toggle-btn" id="chatToggle" aria-label="Open chat">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+    </button>
+    <div class="chat-window" id="chatWindow">
+      <div class="chat-header">
+        <div><h5>Orion Assistant</h5><span class="status">Online</span></div>
+        <button type="button" id="chatClose" style="background:none;border:none;color:var(--text-muted);font-size:1.25rem;cursor:pointer;" aria-label="Close chat">&times;</button>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Type a message..." autocomplete="off">
+        <button type="button" id="chatSend">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/translations.js"></script>
+  <script src="assets/js/chat.js"></script>
+
+  <!-- Download Form Handler -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var downloadForm = document.getElementById('downloadForm');
+      var downloadEmail = document.getElementById('downloadEmail');
+
+      if (downloadForm) {
+        downloadForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+
+          var email = downloadEmail.value.trim();
+          var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+          if (!email || !emailRegex.test(email)) {
+            downloadEmail.style.borderColor = '#e53935';
+            return;
+          }
+
+          var btn = this.querySelector('button[type="submit"]');
+          var originalText = btn.textContent;
+          btn.textContent = 'Preparing Download...';
+          btn.disabled = true;
+
+          setTimeout(function() {
+            btn.textContent = 'Download Started!';
+            btn.style.background = '#4caf50';
+            btn.style.color = 'white';
+
+            setTimeout(function() {
+              btn.textContent = originalText;
+              btn.disabled = false;
+              btn.style.background = '';
+              btn.style.color = '';
+              downloadEmail.value = '';
+            }, 3000);
+          }, 1500);
+        });
+
+        downloadEmail.addEventListener('input', function() {
+          this.style.borderColor = '';
+        });
+      }
+    });
+  </script>
+</body>
+</html>

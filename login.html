@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sign in to your Orion Soft Systems account to access your AI assistant and dashboard.">
+  <title>Sign In | Orion Soft Systems</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 6rem 1.5rem 3rem;
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 2.5rem;
+    }
+    .auth-card h1 {
+      font-size: 1.75rem;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .auth-card .subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+    .auth-error {
+      background: rgba(229, 57, 53, 0.1);
+      border: 1px solid rgba(229, 57, 53, 0.3);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      color: #e53935;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+    .auth-error.visible { display: block; }
+    .auth-success {
+      background: rgba(76, 175, 80, 0.1);
+      border: 1px solid rgba(76, 175, 80, 0.3);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      color: #4caf50;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+    .auth-success.visible { display: block; }
+    .auth-footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .auth-footer a {
+      color: var(--accent-blue);
+      font-weight: 600;
+    }
+    .auth-footer a:hover { text-decoration: underline; }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+    .back-link:hover { color: var(--accent-blue); }
+    .password-field { position: relative; }
+    .password-toggle {
+      position: absolute;
+      right: 0.75rem;
+      top: 50%;
+      transform: translateY(-30%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-loader"><div class="loader-spinner"></div></div>
+
+  <div class="auth-page">
+    <div class="auth-card">
+      <a href="index.html" class="back-link">&larr; Back to Home</a>
+      <h1>Welcome Back</h1>
+      <p class="subtitle">Sign in to access your AI assistant</p>
+
+      <div class="auth-error" id="authError"></div>
+      <div class="auth-success" id="authSuccess"></div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="loginEmail">Email Address</label>
+          <input type="email" id="loginEmail" name="email" class="form-control" placeholder="you@company.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label for="loginPassword">Password</label>
+          <div class="password-field">
+            <input type="password" id="loginPassword" name="password" class="form-control" placeholder="Enter your password" required autocomplete="current-password">
+            <button type="button" class="password-toggle" onclick="togglePassword('loginPassword', this)">Show</button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;" id="loginBtn">Sign In</button>
+      </form>
+
+      <div class="auth-footer">
+        Don't have an account? <a href="register.html">Create one free</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = localStorage.getItem("apiUrl") || "http://localhost:5000/api";
+
+    function togglePassword(fieldId, btn) {
+      const field = document.getElementById(fieldId);
+      if (field.type === "password") {
+        field.type = "text";
+        btn.textContent = "Hide";
+      } else {
+        field.type = "password";
+        btn.textContent = "Show";
+      }
+    }
+
+    function showError(msg) {
+      const el = document.getElementById("authError");
+      el.textContent = msg;
+      el.classList.add("visible");
+      document.getElementById("authSuccess").classList.remove("visible");
+    }
+
+    function showSuccess(msg) {
+      const el = document.getElementById("authSuccess");
+      el.textContent = msg;
+      el.classList.add("visible");
+      document.getElementById("authError").classList.remove("visible");
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPassword").value;
+      const btn = document.getElementById("loginBtn");
+
+      if (!email || !password) {
+        showError("Please fill in all fields");
+        return;
+      }
+
+      btn.textContent = "Signing in...";
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(`${API_URL}/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          showError(data.error || "Login failed");
+          return;
+        }
+
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        showSuccess("Login successful! Redirecting...");
+
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 1000);
+
+      } catch (err) {
+        showError("Connection error. Is the backend running?");
+      } finally {
+        btn.textContent = "Sign In";
+        btn.disabled = false;
+      }
+    });
+
+    // Check if already logged in
+    if (localStorage.getItem("token")) {
+      window.location.href = "dashboard.html";
+    }
+  </script>
+</body>
+</html>

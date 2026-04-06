@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Orion AI Assistant responds to your customers instantly, 24/7, so you never lose a lead to slow replies. WhatsApp, website chatbot, and more.">
+  <meta name="keywords" content="AI assistant, WhatsApp bot, chatbot, lead capture, AI customer support, Orion AI Assistant">
+  <meta name="author" content="Orion Soft Systems">
+  <title>Orion AI Assistant | Never Miss a Customer Again</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <style>
+    /* Product-page-specific styles */
+    .product-hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(ellipse at 50% 0%, rgba(79, 143, 255, 0.08) 0%, transparent 60%);
+    }
+
+    .product-hero .hero-badge {
+      display: inline-block;
+      padding: 0.5rem 1.25rem;
+      background: rgba(79, 143, 255, 0.1);
+      border: 1px solid rgba(79, 143, 255, 0.2);
+      border-radius: 50px;
+      color: var(--accent-blue);
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .product-hero p {
+      font-size: 1.25rem;
+      max-width: 700px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .stat-highlight {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, rgba(79, 143, 255, 0.08), rgba(139, 92, 246, 0.08));
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+    }
+
+    .stat-highlight .stat-number {
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 800;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .stat-highlight p {
+      font-size: 1.25rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .solution-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .solution-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      transition: all var(--transition-base);
+    }
+
+    .solution-item:hover {
+      border-color: var(--accent-blue);
+      background: var(--bg-card-hover);
+    }
+
+    .solution-item .icon-circle {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      background: rgba(79, 143, 255, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+
+    .solution-item h5 {
+      margin-bottom: 0.25rem;
+    }
+
+    .solution-item p {
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    .feature-card {
+      text-align: center;
+      padding: 2.5rem 2rem;
+    }
+
+    .feature-card .feature-icon {
+      margin: 0 auto 1.5rem;
+    }
+
+    .feature-card p {
+      margin-bottom: 0;
+    }
+
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      counter-reset: step;
+    }
+
+    .step {
+      text-align: center;
+      position: relative;
+      counter-increment: step;
+    }
+
+    .step::before {
+      content: counter(step);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 60px;
+      background: var(--accent-gradient);
+      border-radius: 50%;
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin: 0 auto 1.5rem;
+    }
+
+    .step h4 {
+      margin-bottom: 0.5rem;
+    }
+
+    .step p {
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    .pricing-card .price {
+      font-size: 3rem;
+      font-weight: 800;
+      margin: 1rem 0;
+    }
+
+    .pricing-card .price span {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .pricing-card ul {
+      text-align: left;
+      margin: 1.5rem 0;
+    }
+
+    .pricing-card ul li {
+      padding: 0.5rem 0;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .pricing-card ul li::before {
+      content: '\2713';
+      color: #10b981;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .faq-item {
+      padding: 1.5rem 2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      margin-bottom: 1rem;
+      cursor: pointer;
+      transition: all var(--transition-base);
+    }
+
+    .faq-item:hover {
+      border-color: var(--accent-blue);
+    }
+
+    .faq-item summary {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .faq-item summary::after {
+      content: '+';
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: var(--accent-blue);
+      transition: transform var(--transition-base);
+    }
+
+    .faq-item[open] summary::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-item p {
+      margin-top: 1rem;
+      margin-bottom: 0;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .guarantee-box {
+      text-align: center;
+      padding: 2.5rem;
+      background: rgba(16, 185, 129, 0.05);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: var(--radius-lg);
+      max-width: 700px;
+      margin: 3rem auto 0;
+    }
+
+    .guarantee-box .icon-circle {
+      width: 60px;
+      height: 60px;
+      background: rgba(16, 185, 129, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 1rem;
+    }
+
+    .guarantee-box h4 {
+      color: #10b981;
+      margin-bottom: 0.5rem;
+    }
+
+    .guarantee-box p {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 768px) {
+      .product-hero p {
+        font-size: 1.1rem;
+      }
+
+      .stat-highlight .stat-number {
+        font-size: 3rem;
+      }
+
+      .solution-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== PAGE LOADER ==================== -->
+  <div class="page-loader" aria-hidden="true">
+    <div class="loader-spinner"></div>
+  </div>
+
+  <!-- ==================== NAVBAR ==================== -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="../index.html" class="navbar-brand"><span class="logo-icon"></span> Orion Soft Systems</a>
+      <div class="navbar-menu">
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="../services/index.html">Services</a>
+        <a href="orion-ai-assistant.html" class="active">Products</a>
+        <a href="../pricing.html">Pricing</a>
+        <a href="../projects.html">Projects</a>
+        <a href="../download.html">Download</a>
+        <a href="../contact.html">Contact</a>
+        <div class="lang-switcher">
+          <button class="lang-switcher-btn" id="langSwitcherBtn">EN</button>
+          <div class="lang-dropdown" id="langDropdown">
+            <button class="lang-option" data-lang="en">English</button>
+            <button class="lang-option" data-lang="fr">Francais</button>
+            <button class="lang-option" data-lang="es">Espanol</button>
+            <button class="lang-option" data-lang="de">Deutsch</button>
+          </div>
+        </div>
+        <a href="../contact.html" class="btn btn-primary">Book a Demo</a>
+      </div>
+      <button class="mobile-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ==================== HERO ==================== -->
+    <section class="product-hero">
+      <div class="container">
+        <div class="hero-content">
+          <span class="hero-badge">AI-Powered Customer Assistant</span>
+          <h1>Never Miss a <span class="text-gradient">Customer</span> Again</h1>
+          <p>Orion AI Assistant responds to your customers instantly, 24/7, so you never lose a lead to slow replies.</p>
+          <div class="btn-group">
+            <a href="#pricing" class="btn btn-primary">Get Your AI Assistant</a>
+            <a href="../contact.html" class="btn btn-secondary">Request Demo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== THE PROBLEM ==================== -->
+    <section class="section fade-in">
+      <div class="container">
+        <div class="section-header">
+          <h2>The <span class="text-gradient">Problem</span></h2>
+        </div>
+        <div class="stat-highlight">
+          <div class="stat-number">70%</div>
+          <p>of customers choose the business that replies <strong style="color: var(--text-primary);">first</strong>. But most businesses take hours -- or days -- to respond. Every missed message is a lost opportunity.</p>
+        </div>
+        <div class="grid grid-3" style="margin-top: 3rem;">
+          <div class="card" style="text-align: center;">
+            <div class="feature-icon" style="margin: 0 auto 1rem; font-size: 1.25rem;" aria-hidden="true">&#9201;</div>
+            <h4>Slow Response Times</h4>
+            <p>The average business takes over 12 hours to reply to a customer inquiry. By then, they have already chosen a competitor.</p>
+          </div>
+          <div class="card" style="text-align: center;">
+            <div class="feature-icon" style="margin: 0 auto 1rem; font-size: 1.25rem;" aria-hidden="true">&#128683;</div>
+            <h4>Missed After-Hours Leads</h4>
+            <p>Over 40% of customer messages arrive outside business hours. Without instant replies, those leads go cold.</p>
+          </div>
+          <div class="card" style="text-align: center;">
+            <div class="feature-icon" style="margin: 0 auto 1rem; font-size: 1.25rem;" aria-hidden="true">&#128194;</div>
+            <h4>No Lead Tracking</h4>
+            <p>Most businesses have no system to capture and follow up with interested prospects. Good conversations disappear forever.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== THE SOLUTION ==================== -->
+    <section class="section fade-in" style="background: var(--bg-secondary);">
+      <div class="container">
+        <div class="section-header">
+          <h2>The <span class="text-gradient">Orion</span> Solution</h2>
+          <p>An AI assistant that responds to your customers instantly -- on WhatsApp, your website, and social media. It learns your business, captures leads, and works while you sleep.</p>
+        </div>
+        <div class="solution-grid">
+          <div class="solution-item">
+            <div class="icon-circle">&#9889;</div>
+            <div>
+              <h5>Instant Replies</h5>
+              <p>Responds in under 2 seconds -- faster than any human team.</p>
+            </div>
+          </div>
+          <div class="solution-item">
+            <div class="icon-circle">&#127758;</div>
+            <div>
+              <h5>Everywhere Your Customers Are</h5>
+              <p>WhatsApp, website chat, and social media -- one assistant, all channels.</p>
+            </div>
+          </div>
+          <div class="solution-item">
+            <div class="icon-circle">&#127891;</div>
+            <div>
+              <h5>Trained on YOUR Business</h5>
+              <p>Learns your products, services, pricing, and policies to give accurate answers.</p>
+            </div>
+          </div>
+          <div class="solution-item">
+            <div class="icon-circle">&#128200;</div>
+            <div>
+              <h5>Captures Every Lead</h5>
+              <p>Automatically collects names, emails, and phone numbers from every conversation.</p>
+            </div>
+          </div>
+          <div class="solution-item">
+            <div class="icon-circle">&#127769;</div>
+            <div>
+              <h5>Works 24/7</h5>
+              <p>Never closes, never sleeps. Your AI assistant is always on duty.</p>
+            </div>
+          </div>
+          <div class="solution-item">
+            <div class="icon-circle">&#128202;</div>
+            <div>
+              <h5>Performance Dashboard</h5>
+              <p>Track conversations, leads, and ROI from a single analytics panel.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== WHAT IT DOES (6 FEATURES) ==================== -->
+    <section class="section fade-in">
+      <div class="container">
+        <div class="section-header">
+          <h2>What <span class="text-gradient">It Does</span></h2>
+          <p>Everything you need to convert customer inquiries into closed deals -- on autopilot.</p>
+        </div>
+        <div class="grid grid-3">
+          <div class="card feature-card">
+            <div class="feature-icon" aria-hidden="true">&#128172;</div>
+            <h4>Automated Replies</h4>
+            <p>Instant, intelligent responses to any customer query. No waiting, no missed messages.</p>
+          </div>
+          <div class="card feature-card">
+            <div class="feature-icon" aria-hidden="true">&#128241;</div>
+            <h4>WhatsApp Integration</h4>
+            <p>Meet your customers where they already are. Full WhatsApp Business API integration.</p>
+          </div>
+          <div class="card feature-card">
+            <div class="feature-icon" aria-hidden="true">&#127760;</div>
+            <h4>Website Chatbot</h4>
+            <p>Engage visitors before they leave your site with a smart, conversational chatbot.</p>
+          </div>
+          <div class="card feature-card">
+            <div class="feature-icon" aria-hidden="true">&#127919;</div>
+            <h4>Lead Capture</h4>
+            <p>Automatically collect names, emails, and phone numbers from every conversation.</p>
+          </div>
+          <div class="card feature-card">
+            <div class="feature-icon" aria-hidden="true">&#129302;</div>
+            <h4>Custom-Trained AI</h4>
+            <p>Trained on YOUR business data for accurate, relevant answers every time.</p>
+          </div>
+          <div class="card feature-card">
+            <div class="feature-icon" aria-hidden="true">&#128202;</div>
+            <h4>Analytics Dashboard</h4>
+            <p>Track conversations, leads, response quality, and performance metrics in real time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== HOW IT WORKS (4 STEPS) ==================== -->
+    <section class="section fade-in" style="background: var(--bg-secondary);">
+      <div class="container">
+        <div class="section-header">
+          <h2>How <span class="text-gradient">It Works</span></h2>
+          <p>From kickoff to live deployment in four simple steps.</p>
+        </div>
+        <div class="process-steps">
+          <div class="step">
+            <h4>Analyze Your Business</h4>
+            <p>We study your products, services, FAQs, and customer journeys to understand exactly what your AI assistant needs to know.</p>
+          </div>
+          <div class="step">
+            <h4>Train the AI</h4>
+            <p>We build and train a custom AI model on your business data so it speaks like your best sales rep.</p>
+          </div>
+          <div class="step">
+            <h4>Deploy Everywhere</h4>
+            <p>We connect your AI assistant to WhatsApp, your website, and any other channels your customers use.</p>
+          </div>
+          <div class="step">
+            <h4>Monitor &amp; Optimize</h4>
+            <p>We track performance, review conversations, and continuously improve response quality and lead capture.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== PRICING ==================== -->
+    <section id="pricing" class="section fade-in">
+      <div class="container">
+        <div class="section-header">
+          <h2>Simple, <span class="text-gradient">Transparent</span> Pricing</h2>
+          <p>No hidden fees. No long-term contracts. Cancel anytime.</p>
+        </div>
+        <div class="pricing-grid">
+          <!-- Starter Plan -->
+          <div class="card pricing-card">
+            <h3>Starter</h3>
+            <div class="price">$299<span>/month</span></div>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Perfect for small businesses getting started with AI.</p>
+            <ul>
+              <li>WhatsApp OR Website chatbot (choose one)</li>
+              <li>Up to 500 conversations/month</li>
+              <li>Basic lead capture</li>
+              <li>Standard AI training</li>
+              <li>Email support</li>
+            </ul>
+            <a href="../contact.html" class="btn btn-secondary" style="width: 100%;">Get Started</a>
+          </div>
+          <!-- Professional Plan -->
+          <div class="card pricing-card featured">
+            <span class="badge">Most Popular</span>
+            <h3>Professional</h3>
+            <div class="price">$599<span>/month</span></div>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">For growing businesses that want the full AI advantage.</p>
+            <ul>
+              <li>WhatsApp + Website + Social media</li>
+              <li>Unlimited conversations</li>
+              <li>Advanced lead capture + CRM integration</li>
+              <li>Custom AI training on your data</li>
+              <li>Analytics dashboard</li>
+              <li>Priority support</li>
+              <li>Monthly optimization</li>
+            </ul>
+            <a href="../contact.html" class="btn btn-primary" style="width: 100%;">Get Started</a>
+          </div>
+        </div>
+
+        <div class="guarantee-box">
+          <div class="icon-circle">&#128737;</div>
+          <h4>Setup Included at No Extra Cost</h4>
+          <p>Every plan includes free setup, custom AI training, and deployment. You pay only the monthly subscription.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== FAQ ==================== -->
+    <section class="section fade-in" style="background: var(--bg-secondary);">
+      <div class="container">
+        <div class="section-header">
+          <h2>Frequently Asked <span class="text-gradient">Questions</span></h2>
+        </div>
+        <div style="max-width: 800px; margin: 0 auto;">
+          <details class="faq-item">
+            <summary>How long does it take to set up my AI assistant?</summary>
+            <p>Most assistants are live within 5 to 7 business days. This includes analyzing your business, training the AI, testing responses, and deploying to your chosen channels.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Will the AI give incorrect answers to my customers?</summary>
+            <p>Your AI is trained exclusively on your business data -- your products, services, pricing, and FAQs. It only answers what it knows. If a query is outside its knowledge, it politely escalates to a human team member.</p>
+          </details>
+          <details class="faq-item">
+            <summary>Can I use the AI assistant on both WhatsApp and my website?</summary>
+            <p>Yes. The Starter plan includes one channel of your choice. The Professional plan includes WhatsApp, website chatbot, and social media -- all for one price.</p>
+          </details>
+          <details class="faq-item">
+            <summary>What happens if I want to cancel?</summary>
+            <p>You can cancel anytime with no penalties. There are no long-term contracts. Your data and conversation history remain available for export for 30 days after cancellation.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== FINAL CTA ==================== -->
+    <section class="cta-section fade-in">
+      <div class="container">
+        <h2>Ready to Stop <span class="text-gradient">Losing Customers?</span></h2>
+        <p style="font-size: 1.125rem; margin-bottom: 2.5rem;">Every minute you wait is a customer choosing your competitor. Let Orion AI Assistant reply instantly, capture every lead, and grow your business -- automatically.</p>
+        <div class="btn-group">
+          <a href="../contact.html" class="btn btn-primary">Book a Demo</a>
+          <a href="../contact.html" class="btn btn-secondary">Get Started Today</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="../index.html" class="navbar-brand"><span class="logo-icon"></span> Orion Soft Systems</a>
+          <p>Building Intelligent Systems for a Smarter Future.</p>
+        </div>
+        <div class="footer-links">
+          <h5>Quick Links</h5>
+          <a href="../about.html">About Us</a>
+          <a href="../projects.html">Projects</a>
+          <a href="../pricing.html">Pricing</a>
+          <a href="../download.html">Download MIC</a>
+          <a href="../contact.html">Contact</a>
+        </div>
+        <div class="footer-links">
+          <h5>Services</h5>
+          <a href="../services/web-development.html">Web Development</a>
+          <a href="../services/ai-solutions.html">AI Solutions</a>
+          <a href="../services/automation.html">Automation</a>
+          <a href="../services/custom-software.html">Custom Software</a>
+        </div>
+        <div class="footer-links">
+          <h5>Contact Info</h5>
+          <a href="mailto:hello@orionsoftsystems.com">hello@orionsoftsystems.com</a>
+          <a href="https://wa.me/2348139151102" target="_blank" rel="noopener">WhatsApp: +234 813 915 1102</a>
+        </div>
+      </div>
+      <div class="footer-bottom"><p>2026 Orion Soft Systems. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <!-- ==================== WHATSAPP FLOAT ==================== -->
+  <a href="https://wa.me/2348139151102" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat with us on WhatsApp">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M16.004 0C7.164 0 0 7.163 0 16.004c0 2.823 0.737 5.58 2.137 7.998L0.074 32l8.196-2.05c2.308 1.26 4.92 1.92 7.734 1.92 8.84 0 16.004-7.164 16.004-16.004S24.844 0 16.004 0zm0 26.56c-2.42 0-4.79-0.65-6.87-1.88l-0.49-0.29-5.08 1.34 1.35-4.96-0.32-0.51C3.29 18.16 2.64 15.78 2.64 13.34c0-7.38 6.0-13.38 13.38-13.38s13.38 6.0 13.38 13.38-6.0 13.22-13.4 13.22z"/>
+      <path d="M21.72 18.58c-0.36-0.18-2.14-1.06-2.46-1.18-0.32-0.12-0.56-0.18-0.8 0.18s-0.92 1.18-1.12 1.42c-0.22 0.24-0.44 0.26-0.8 0.08-0.36-0.18-1.52-0.56-2.9-1.78-1.08-0.96-1.8-2.14-2.02-2.5-0.22-0.36-0.02-0.56 0.16-0.74 0.16-0.16 0.36-0.44 0.54-0.64 0.18-0.22 0.24-0.36 0.36-0.62 0.12-0.24 0.06-0.46-0.02-0.64-0.1-0.18-0.8-1.94-1.1-2.64-0.28-0.7-0.58-0.6-0.8-0.62h-0.68c-0.24 0-0.62 0.08-0.94 0.44-0.32 0.36-1.24 1.22-1.24 2.98s1.28 3.46 1.46 3.7c0.18 0.24 2.52 3.86 6.12 5.42 0.86 0.36 1.52 0.58 2.04 0.74 0.86 0.28 1.64 0.24 2.26 0.14 0.68-0.1 2.14-0.88 2.44-1.72 0.3-0.84 0.3-1.56 0.22-1.72-0.1-0.14-0.34-0.22-0.7-0.4z"/>
+    </svg>
+  </a>
+
+  <!-- ==================== CHAT WIDGET ==================== -->
+  <div class="chat-widget">
+    <button type="button" class="chat-toggle-btn" id="chatToggle" aria-label="Open chat">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+    </button>
+    <div class="chat-window" id="chatWindow">
+      <div class="chat-header">
+        <div><h5>Orion Assistant</h5><span class="status">Online</span></div>
+        <button type="button" id="chatClose" style="background:none;border:none;color:var(--text-muted);font-size:1.25rem;cursor:pointer;" aria-label="Close chat">&times;</button>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Type a message..." autocomplete="off">
+        <button type="button" id="chatSend">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SCRIPTS ==================== -->
+  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/translations.js"></script>
+  <script src="../assets/js/chat.js"></script>
+</body>
+</html>

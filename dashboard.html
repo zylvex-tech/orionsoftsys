@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Orion Soft Systems Dashboard - Manage your AI assistant, usage, and subscription.">
+  <title>Dashboard | Orion Soft Systems</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .dashboard-page { padding: 7rem 1.5rem 3rem; min-height: 100vh; }
+    .dashboard-header {
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem; margin-bottom: 3rem;
+    }
+    .dashboard-header h1 { margin: 0; font-size: 2rem; }
+    .user-greeting { color: var(--text-secondary); margin: 0; }
+    .stats-row {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem; margin-bottom: 2.5rem;
+    }
+    .stat-card {
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg); padding: 1.5rem;
+    }
+    .stat-card .label { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 0.5rem; }
+    .stat-card .value { font-size: 1.75rem; font-weight: 800; color: var(--text-primary); }
+    .stat-card .sub { color: var(--text-muted); font-size: 0.8rem; margin-top: 0.25rem; }
+    .plan-badge {
+      display: inline-block; padding: 0.35rem 1rem; border-radius: 20px;
+      font-size: 0.85rem; font-weight: 700; text-transform: uppercase;
+    }
+    .plan-badge.free { background: rgba(122,122,154,0.2); color: #7a7a9a; }
+    .plan-badge.starter { background: rgba(245,166,35,0.15); color: #F5A623; }
+    .plan-badge.professional { background: rgba(79,143,255,0.15); color: #4f8fff; }
+    .plan-badge.enterprise { background: rgba(139,92,246,0.15); color: #8b5cf6; }
+    .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+    @media (max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } }
+    .dash-card {
+      background: var(--bg-card); border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg); padding: 2rem;
+    }
+    .dash-card h3 { font-size: 1.25rem; margin-bottom: 1.5rem; }
+    .usage-bar {
+      width: 100%; height: 8px; background: rgba(245,166,35,0.1);
+      border-radius: 4px; overflow: hidden; margin: 0.75rem 0;
+    }
+    .usage-bar-fill {
+      height: 100%; background: var(--accent-gradient); border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+    .quick-links { list-style: none; }
+    .quick-links li { margin-bottom: 0.75rem; }
+    .quick-links a {
+      display: flex; align-items: center; gap: 0.75rem;
+      color: var(--text-secondary); padding: 0.75rem 1rem;
+      border-radius: var(--radius-md); border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .quick-links a:hover {
+      background: var(--bg-card-hover); border-color: var(--border-color);
+      color: var(--accent-blue);
+    }
+    .quick-links .icon {
+      width: 36px; height: 36px; background: rgba(245,166,35,0.1);
+      border-radius: var(--radius-sm); display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0; font-size: 1.1rem;
+    }
+    .settings-section { margin-top: 2rem; }
+    .settings-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 0; border-bottom: 1px solid var(--border-color);
+    }
+    .settings-row:last-child { border-bottom: none; }
+    .settings-row label { color: var(--text-secondary); font-size: 0.95rem; }
+    .btn-sm { padding: 0.5rem 1rem; font-size: 0.85rem; }
+    .btn-danger {
+      background: rgba(229,57,53,0.1); color: #e53935;
+      border: 1px solid rgba(229,57,53,0.3); border-radius: var(--radius-sm);
+      padding: 0.5rem 1rem; cursor: pointer; font-size: 0.85rem;
+      transition: all 0.2s ease;
+    }
+    .btn-danger:hover { background: rgba(229,57,53,0.2); }
+    .logout-btn {
+      background: rgba(229,57,53,0.1); color: #e53935;
+      border: 1px solid rgba(229,57,53,0.3);
+    }
+    .logout-btn:hover { background: rgba(229,57,53,0.2); }
+    .empty-state { text-align: center; padding: 3rem 1rem; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+  <div class="page-loader"><div class="loader-spinner"></div></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" role="navigation">
+    <div class="container">
+      <a href="index.html" class="navbar-brand">
+        <span class="logo-icon"></span> Orion Soft Systems
+      </a>
+      <div class="navbar-menu">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services/index.html">Services</a>
+        <a href="products/orion-ai-assistant.html">Products</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="projects.html">Projects</a>
+        <a href="download.html">Download</a>
+        <a href="contact.html">Contact</a>
+        <a href="dashboard.html" class="active" style="color:var(--accent-blue);">Dashboard</a>
+        <button onclick="logout()" class="btn btn-sm logout-btn">Sign Out</button>
+      </div>
+      <button class="mobile-toggle" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="dashboard-page">
+    <div class="container">
+      <div class="dashboard-header">
+        <div>
+          <p class="user-greeting" id="greeting">Welcome back,</p>
+          <h1 id="userName">Loading...</h1>
+        </div>
+        <div class="btn-group">
+          <a href="pricing.html" class="btn btn-secondary btn-sm">Upgrade Plan</a>
+          <a href="contact.html" class="btn btn-primary btn-sm">Contact Support</a>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-row fade-in">
+        <div class="stat-card">
+          <div class="label">Current Plan</div>
+          <div class="value" id="planName">—</div>
+          <div class="sub" id="planStatus"></div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Messages Today</div>
+          <div class="value" id="msgCount">0</div>
+          <div class="sub" id="msgLimit"></div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Total Messages</div>
+          <div class="value" id="totalMsgs">0</div>
+          <div class="sub">All time</div>
+        </div>
+        <div class="stat-card">
+          <div class="label">Business Type</div>
+          <div class="value" id="bizType" style="font-size:1.25rem;">—</div>
+          <div class="sub">Your industry</div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <!-- Main Content -->
+        <div>
+          <!-- Usage Card -->
+          <div class="dash-card fade-in">
+            <h3>Usage This Period</h3>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+              <span style="color:var(--text-secondary);font-size:0.9rem;" id="usageText">0 of 0 messages</span>
+              <span style="color:var(--accent-blue);font-weight:600;font-size:0.9rem;" id="usagePercent">0%</span>
+            </div>
+            <div class="usage-bar">
+              <div class="usage-bar-fill" id="usageBar" style="width:0%"></div>
+            </div>
+            <p style="color:var(--text-muted);font-size:0.85rem;margin-top:1rem;" id="usageNote">
+              Your daily counter resets at midnight.
+            </p>
+          </div>
+
+          <!-- Settings -->
+          <div class="dash-card fade-in settings-section">
+            <h3>Account Settings</h3>
+            <form id="settingsForm">
+              <div class="form-group">
+                <label for="settingsName">Name</label>
+                <input type="text" id="settingsName" class="form-control">
+              </div>
+              <div class="form-group">
+                <label for="settingsPhone">Phone</label>
+                <input type="tel" id="settingsPhone" class="form-control" placeholder="+234...">
+              </div>
+              <div class="form-group">
+                <label for="settingsContext">AI Business Context (optional)</label>
+                <textarea id="settingsContext" class="form-control" rows="3" placeholder="Describe your business so the AI can give better responses..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary btn-sm" id="saveBtn">Save Changes</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div>
+          <div class="dash-card fade-in">
+            <h3>Quick Links</h3>
+            <ul class="quick-links">
+              <li>
+                <a href="products/orion-ai-assistant.html">
+                  <span class="icon">🤖</span>
+                  <span>AI Assistant</span>
+                </a>
+              </li>
+              <li>
+                <a href="pricing.html">
+                  <span class="icon">💳</span>
+                  <span>Upgrade Plan</span>
+                </a>
+              </li>
+              <li>
+                <a href="contact.html">
+                  <span class="icon">💬</span>
+                  <span>Contact Support</span>
+                </a>
+              </li>
+              <li>
+                <a href="index.html">
+                  <span class="icon">🏠</span>
+                  <span>Back to Home</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="dash-card fade-in" style="margin-top:1.5rem;">
+            <h3>Subscription</h3>
+            <div id="subInfo">
+              <p style="color:var(--text-muted);font-size:0.9rem;">Loading subscription info...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- WhatsApp Float -->
+  <a href="https://wa.me/2348139151102" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M16.004 0C7.164 0 0 7.163 0 16.004c0 2.823 0.737 5.58 2.137 7.998L0.074 32l8.196-2.05c2.308 1.26 4.92 1.92 7.734 1.92 8.84 0 16.004-7.164 16.004-16.004S24.844 0 16.004 0zm0 26.56c-2.42 0-4.79-0.65-6.87-1.88l-0.49-0.29-5.08 1.34 1.35-4.96-0.32-0.51C3.29 18.16 2.64 15.78 2.64 13.34c0-7.38 6.0-13.38 13.38-13.38s13.38 6.0 13.38 13.38-6.0 13.22-13.4 13.22z"/><path d="M21.72 18.58c-0.36-0.18-2.14-1.06-2.46-1.18-0.32-0.12-0.56-0.18-0.8 0.18s-0.92 1.18-1.12 1.42c-0.22 0.24-0.44 0.26-0.8 0.08-0.36-0.18-1.52-0.56-2.9-1.78-1.08-0.96-1.8-2.14-2.02-2.5-0.22-0.36-0.02-0.56 0.16-0.74 0.16-0.16 0.36-0.44 0.54-0.64 0.18-0.22 0.24-0.36 0.36-0.62 0.12-0.24 0.06-0.46-0.02-0.64-0.1-0.18-0.8-1.94-1.1-2.64-0.28-0.7-0.58-0.6-0.8-0.62h-0.68c-0.24 0-0.62 0.08-0.94 0.44-0.32 0.36-1.24 1.22-1.24 2.98s1.28 3.46 1.46 3.7c0.18 0.24 2.52 3.86 6.12 5.42 0.86 0.36 1.52 0.58 2.04 0.74 0.86 0.28 1.64 0.24 2.26 0.14 0.68-0.1 2.14-0.88 2.44-1.72 0.3-0.84 0.3-1.56 0.22-1.72-0.1-0.14-0.34-0.22-0.7-0.4z"/></svg>
+  </a>
+
+  <script src="assets/js/main.js"></script>
+  <script>
+    const API_URL = localStorage.getItem("apiUrl") || "http://localhost:5000/api";
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      window.location.href = "login.html";
+    }
+
+    function logout() {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "login.html";
+    }
+
+    const bizLabels = {
+      "small-business": "Small Business",
+      "education": "Education",
+      "healthcare": "Healthcare",
+      "real-estate": "Real Estate",
+      "ecommerce": "E-commerce",
+      "startup": "Startup",
+      "enterprise": "Enterprise",
+      "other": "Other"
+    };
+
+    async function loadDashboard() {
+      try {
+        const res = await fetch(`${API_URL}/auth/profile`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          if (data.code === "TOKEN_EXPIRED" || data.code === "INVALID_TOKEN") {
+            logout();
+            return;
+          }
+          return;
+        }
+
+        const user = data.user;
+
+        // Greeting
+        const hour = new Date().getHours();
+        const greet = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+        document.getElementById("greeting").textContent = `${greet},`;
+        document.getElementById("userName").textContent = user.name;
+
+        // Plan
+        const planEl = document.getElementById("planName");
+        planEl.textContent = user.plan.charAt(0).toUpperCase() + user.plan.slice(1);
+        planEl.className = "value plan-badge " + user.plan;
+
+        const statusEl = document.getElementById("planStatus");
+        if (user.subscriptionStatus === "trial") {
+          const daysLeft = Math.ceil((new Date(user.trialEndsAt) - new Date()) / (1000*60*60*24));
+          statusEl.textContent = `Free trial — ${daysLeft} days remaining`;
+        } else {
+          statusEl.textContent = `Status: ${user.subscriptionStatus}`;
+        }
+
+        // Messages
+        document.getElementById("msgCount").textContent = user.messagesThisPeriod;
+        const limit = user.limits.messagesPerDay;
+        document.getElementById("msgLimit").textContent = limit === -1 ? "Unlimited messages" : `of ${limit} daily`;
+        document.getElementById("totalMsgs").textContent = user.totalMessagesAllTime;
+        document.getElementById("bizType").textContent = bizLabels[user.businessType] || user.businessType;
+
+        // Usage bar
+        if (limit === -1) {
+          document.getElementById("usageText").textContent = "Unlimited usage";
+          document.getElementById("usagePercent").textContent = "∞";
+          document.getElementById("usageBar").style.width = "100%";
+        } else {
+          const pct = Math.min((user.messagesThisPeriod / limit) * 100, 100);
+          document.getElementById("usageText").textContent = `${user.messagesThisPeriod} of ${limit} messages`;
+          document.getElementById("usagePercent").textContent = Math.round(pct) + "%";
+          document.getElementById("usageBar").style.width = pct + "%";
+          if (pct >= 90) {
+            document.getElementById("usageBar").style.background = "linear-gradient(135deg, #e53935, #ef4444)";
+          }
+        }
+
+        // Subscription info
+        const subInfo = document.getElementById("subInfo");
+        if (user.subscriptionStatus === "trial") {
+          const daysLeft = Math.ceil((new Date(user.trialEndsAt) - new Date()) / (1000*60*60*24));
+          subInfo.innerHTML = `
+            <p style="color:var(--text-secondary);font-size:0.9rem;">You're on a <strong style="color:var(--accent-blue);">14-day free trial</strong>.</p>
+            <p style="color:var(--text-muted);font-size:0.85rem;">${daysLeft > 0 ? daysLeft + " days remaining." : "Trial has expired."}</p>
+            <a href="pricing.html" class="btn btn-primary btn-sm" style="margin-top:1rem;width:100%;">Upgrade Now</a>
+          `;
+        } else if (user.subscriptionStatus === "active") {
+          subInfo.innerHTML = `
+            <p style="color:var(--success);font-size:0.9rem;">✅ Subscription Active</p>
+            <p style="color:var(--text-muted);font-size:0.85rem;">Plan: ${user.plan}</p>
+            <a href="pricing.html" class="btn btn-secondary btn-sm" style="margin-top:1rem;width:100%;">Manage Subscription</a>
+          `;
+        } else {
+          subInfo.innerHTML = `
+            <p style="color:var(--text-muted);font-size:0.9rem;">No active subscription</p>
+            <a href="pricing.html" class="btn btn-primary btn-sm" style="margin-top:1rem;width:100%;">Get Started</a>
+          `;
+        }
+
+        // Settings form
+        document.getElementById("settingsName").value = user.name;
+        document.getElementById("settingsPhone").value = user.phone || "";
+        document.getElementById("settingsContext").value = user.aiContext || "";
+
+      } catch (err) {
+        console.error("Failed to load dashboard:", err);
+      }
+    }
+
+    // Save settings
+    document.getElementById("settingsForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const btn = document.getElementById("saveBtn");
+      btn.textContent = "Saving...";
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(`${API_URL}/auth/profile`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            name: document.getElementById("settingsName").value.trim(),
+            phone: document.getElementById("settingsPhone").value.trim(),
+            aiContext: document.getElementById("settingsContext").value.trim()
+          })
+        });
+
+        if (res.ok) {
+          btn.textContent = "✓ Saved";
+          btn.style.background = "#4caf50";
+          setTimeout(() => {
+            btn.textContent = "Save Changes";
+            btn.style.background = "";
+          }, 2000);
+        }
+      } catch (err) {
+        btn.textContent = "Error";
+        setTimeout(() => { btn.textContent = "Save Changes"; }, 2000);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    loadDashboard();
+  </script>
+</body>
+</html>
