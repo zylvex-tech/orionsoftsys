@@ -1,18 +1,18 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const UserModel = require("../models/User");
 
 // Authentication middleware
 exports.auth = async (req, res, next) => {
   try {
     const token = req.headers.authorization?.replace("Bearer ", "");
-    
+
     if (!token) {
       return res.status(401).json({ error: "Authentication required", code: "NO_TOKEN" });
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id).select("+password");
-    
+    const user = await UserModel.findByIdWithPassword(decoded.id);
+
     if (!user) {
       return res.status(401).json({ error: "User not found", code: "USER_NOT_FOUND" });
     }
@@ -34,7 +34,7 @@ exports.optionalAuth = async (req, res, next) => {
     if (!token) return next();
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id);
+    const user = await UserModel.findById(decoded.id);
     if (user) req.user = user;
   } catch (error) { /* Ignore */ }
   next();

@@ -5,9 +5,10 @@ const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
 
-// Import database (auto-connects)
+// Import database (auto-connects and initializes tables)
 require("./db");
 
+const { query } = require("./db");
 const { generalLimiter } = require("./middleware/rateLimiter");
 const { errorHandler, notFound } = require("./middleware/errorHandler");
 
@@ -70,6 +71,24 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+// Database test endpoint
+app.get("/api/test-db", async (req, res) => {
+  try {
+    const result = await query("SELECT NOW() as current_time");
+    res.json({
+      status: "ok",
+      database: "postgresql",
+      timestamp: result.rows[0].current_time
+    });
+  } catch (err) {
+    res.status(500).json({
+      status: "error",
+      database: "postgresql",
+      error: err.message
+    });
+  }
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/billing", billingRoutes);
@@ -101,6 +120,7 @@ app.listen(PORT, "0.0.0.0", () => {
   console.log(`📡 Environment: ${process.env.NODE_ENV || "development"}`);
   console.log(`🌐 Frontend: http://localhost:${PORT}`);
   console.log(`🔌 API: http://localhost:${PORT}/api/health`);
+  console.log(`💾 DB Test: http://localhost:${PORT}/api/test-db`);
 });
 
 module.exports = app;

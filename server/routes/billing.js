@@ -69,17 +69,25 @@ router.post("/verify/paystack", async (req, res, next) => {
       return res.status(400).json({ error: verification.message, code: "PAYMENT_FAILED" });
     }
 
-    const metadata = verification.data.metadata;
-    const userId = metadata.custom_fields?.find(f => f.variable_name === "user_id")?.value
-                || metadata.userId;
-    const plan = metadata.custom_fields?.find(f => f.variable_name === "plan")?.value
-              || metadata.plan;
+    const data = verification.data;
+    const metadata = data.metadata || {};
+
+    // Extract from top-level metadata or custom_fields
+    let userId = metadata.user_id;
+    let plan = metadata.plan;
+
+    if (!userId && metadata.custom_fields) {
+      const userIdField = metadata.custom_fields.find(f => f.variable_name === "user_id");
+      const planField = metadata.custom_fields.find(f => f.variable_name === "plan");
+      if (userIdField) userId = userIdField.value;
+      if (planField) plan = planField.value;
+    }
 
     if (!userId || !plan) {
       return res.status(400).json({ error: "Missing payment metadata", code: "MISSING_METADATA" });
     }
 
-    const amount = verification.data.amount;
+    const amount = data.amount;
     const result = await billingService.activateSubscription(userId, plan, "paystack", reference, amount);
 
     res.json({
@@ -173,17 +181,30 @@ router.post("/webhook/paystack", async (req, res) => {
 
   if (event.event === "charge.success") {
     const data = event.data;
-    const metadata = data.metadata;
+    const metadata = data.metadata || {};
 
-    if (metadata && metadata.userId && metadata.plan) {
+    // Extract from top-level metadata or custom_fields
+    let userId = metadata.user_id;
+    let plan = metadata.plan;
+
+    if (!userId && metadata.custom_fields) {
+      const userIdField = metadata.custom_fields.find(f => f.variable_name === "user_id");
+      const planField = metadata.custom_fields.find(f => f.variable_name === "plan");
+      if (userIdField) userId = userIdField.value;
+      if (planField) plan = planField.value;
+    }
+
+    if (userId && plan) {
       try {
         await billingService.activateSubscription(
-          metadata.userId, metadata.plan, "paystack", data.reference, data.amount
+          userId, plan, "paystack", data.reference, data.amount
         );
-        console.log(`Subscription activated for user ${metadata.userId}`);
+        console.log(`Subscription activated for user ${userId}`);
       } catch (err) {
-        console.error("Error activating subscription:", err);
+        console.error("Error activating subscription:", err.message);
       }
+    } else {
+      console.warn("Paystack webhook: missing user_id or plan in metadata");
     }
   }
 

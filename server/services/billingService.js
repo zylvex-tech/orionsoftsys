@@ -24,6 +24,8 @@ exports.createPaystackPayment = async (user, plan) => {
         user_id: user.id.toString(),
         plan: plan,
         custom_fields: [
+          { display_name: "User ID", variable_name: "user_id", value: user.id.toString() },
+          { display_name: "Plan", variable_name: "plan", value: plan },
           { display_name: "User Name", variable_name: "user_name", value: user.name }
         ]
       }

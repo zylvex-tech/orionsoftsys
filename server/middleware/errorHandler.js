@@ -1,21 +1,33 @@
 exports.errorHandler = (err, req, res, next) => {
-  console.error("Error:", err);
+  console.error("Error:", err.message);
 
-  // Mongoose validation error
-  if (err.name === "ValidationError") {
-    const errors = Object.values(err.errors).map(e => e.message);
-    return res.status(400).json({ error: errors.join(", "), code: "VALIDATION_ERROR" });
-  }
-
-  // Mongoose duplicate key
-  if (err.code === 11000) {
-    const field = Object.keys(err.keyValue)[0];
+  // PostgreSQL unique violation (code 23505)
+  if (err.code === "23505") {
+    const field = err.detail?.match(/\(([^)]+)\)/)?.[1] || "field";
     return res.status(409).json({ error: `${field} already exists`, code: "DUPLICATE_ENTRY" });
   }
 
-  // Mongoose cast error (invalid ObjectId)
-  if (err.name === "CastError") {
-    return res.status(400).json({ error: "Invalid ID format", code: "INVALID_ID" });
+  // PostgreSQL not-null violation (code 23502)
+  if (err.code === "23502") {
+    return res.status(400).json({ error: "Required field is missing", code: "NOT_NULL_VIOLATION" });
+  }
+
+  // PostgreSQL foreign key violation (code 23503)
+  if (err.code === "23503") {
+    return res.status(400).json({ error: "Referenced record not found", code: "FOREIGN_KEY_VIOLATION" });
+  }
+
+  // PostgreSQL check violation (code 23514)
+  if (err.code === "23514") {
+    return res.status(400).json({ error: "Invalid data value", code: "CHECK_VIOLATION" });
+  }
+
+  // Express validator errors
+  if (err.array && typeof err.array === "function") {
+    const errors = err.array();
+    if (errors.length > 0) {
+      return res.status(400).json({ error: errors[0].msg, code: "VALIDATION_ERROR" });
+    }
   }
 
   // JWT errors
@@ -27,9 +39,20 @@ exports.errorHandler = (err, req, res, next) => {
     return res.status(401).json({ error: "Token expired", code: "TOKEN_EXPIRED" });
   }
 
+  // Syntax errors in SQL
+  if (err.code === "42601") {
+    console.error("SQL syntax error:", err.message);
+    return res.status(500).json({ error: "Internal server error", code: "DATABASE_ERROR" });
+  }
+
+  // Connection errors
+  if (err.code === "ECONNREFUSED" || err.code === "ETIMEDOUT") {
+    return res.status(503).json({ error: "Database unavailable", code: "DB_UNAVAILABLE" });
+  }
+
   // Default
   res.status(err.statusCode || 500).json({
-    error: err.message || "Internal server error",
+    error: process.env.NODE_ENV === "production" ? "Internal server error" : err.message,
     code: err.code || "INTERNAL_ERROR"
   });
 };
