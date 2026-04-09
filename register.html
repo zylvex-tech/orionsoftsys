@@ -88,6 +88,8 @@
           <button class="lang-option" data-lang="ha" data-i18n-text="lang.hausa">Hausa</button>
           <button class="lang-option" data-lang="yo" data-i18n-text="lang.yoruba">Yorùbá</button>
           <button class="lang-option" data-lang="de" data-i18n-text="lang.german">Deutsch</button>
+          <button class="lang-option" data-lang="ig" data-i18n-text="lang.igbo">Igbo</button>
+          <button class="lang-option" data-lang="ar" data-i18n-text="lang.arabic">العربية</button>
         </div>
       </div>
       <div class="trial-badge-wrap">
@@ -148,7 +150,7 @@
   </div>
 
   <script>
-    const API_URL = localStorage.getItem("apiUrl") || "http://localhost:5000/api";
+    const API_URL = localStorage.getItem("apiUrl") || "/api";
 
     function togglePassword(fieldId, btn) {
       const field = document.getElementById(fieldId);

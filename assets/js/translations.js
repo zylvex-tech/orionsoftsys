@@ -20,7 +20,8 @@
       ? window.API_URL
       : (typeof localStorage !== "undefined" && localStorage.getItem("apiUrl")) || "";
 
-  const SUPPORTED_LANGS = ["en", "fr", "es", "ha", "yo", "de"];
+  const SUPPORTED_LANGS = ["en", "fr", "es", "ha", "yo", "de", "ig", "ar"];
+  const RTL_LANGS = ["ar"];
   const FALLBACK_LANG = "en";
 
   // ========================================
@@ -73,19 +74,19 @@
 
     _getLocalDictionary() {
       return {
-        "nav.home": { en: "Home", fr: "Accueil", es: "Inicio", ha: "Gida", yo: "Ilé", de: "Startseite" },
-        "nav.about": { en: "About", fr: "À propos", es: "Acerca de", ha: "Game da", yo: "Nípa", de: "Über uns" },
-        "nav.services": { en: "Services", fr: "Services", es: "Servicios", ha: "Ayyuka", yo: "Iṣẹ́", de: "Dienste" },
-        "nav.products": { en: "Products", fr: "Produits", es: "Productos", ha: "Samfura", yo: "Ọjà", de: "Produkte" },
-        "nav.pricing": { en: "Pricing", fr: "Tarifs", es: "Precios", ha: "Farashin", yo: "Iye owó", de: "Preise" },
-        "nav.projects": { en: "Projects", fr: "Projets", es: "Proyectos", ha: "Aikace", yo: "Iṣẹ́ àgbékalẹ̀", de: "Projekte" },
-        "nav.download": { en: "Download", fr: "Télécharger", es: "Descargar", ha: "Sauke", yo: "Gba sílẹ̀", de: "Herunterladen" },
-        "nav.contact": { en: "Contact", fr: "Contact", es: "Contacto", ha: "Tuntuɓa", yo: "Kan sí", de: "Kontakt" },
-        "nav.dashboard": { en: "Dashboard", fr: "Tableau de bord", es: "Panel", ha: "Dashboard", yo: "Dashboard", de: "Dashboard" },
-        "nav.demo": { en: "Book a Demo", fr: "Réserver", es: "Reservar", ha: "Ajiye Demo", yo: "Forúkọsílẹ̀ Demo", de: "Demo buchen" },
-        "nav.login": { en: "Sign In", fr: "Connexion", es: "Iniciar sesión", ha: "Shiga", yo: "Wọlé", de: "Anmelden" },
-        "nav.register": { en: "Get Started", fr: "Commencer", es: "Empezar", ha: "Fara", yo: "Bẹ̀rẹ̀", de: "Loslegen" },
-        "nav.logout": { en: "Sign Out", fr: "Déconnexion", es: "Cerrar sesión", ha: "Fita", yo: "Jáde", de: "Abmelden" },
+        "nav.home": { en: "Home", fr: "Accueil", es: "Inicio", ha: "Gida", yo: "Ilé", de: "Startseite", ig: "Ụlọ", ar: "الرئيسية" },
+        "nav.about": { en: "About", fr: "À propos", es: "Acerca de", ha: "Game da", yo: "Nípa", de: "Über uns", ig: "Maka anyị", ar: "من نحن" },
+        "nav.services": { en: "Services", fr: "Services", es: "Servicios", ha: "Ayyuka", yo: "Iṣẹ́", de: "Dienste", ig: "Ọrụ anyị", ar: "خدماتنا" },
+        "nav.products": { en: "Products", fr: "Produits", es: "Productos", ha: "Samfura", yo: "Ọjà", de: "Produkte", ig: "Ngwaahịa", ar: "منتجاتنا" },
+        "nav.pricing": { en: "Pricing", fr: "Tarifs", es: "Precios", ha: "Farashin", yo: "Iye owó", de: "Preise", ig: "Ọnụahịa", ar: "الأسعار" },
+        "nav.projects": { en: "Projects", fr: "Projets", es: "Proyectos", ha: "Aikace", yo: "Iṣẹ́ àgbékalẹ̀", de: "Projekte", ig: "Ọrụ ihe", ar: "المشاريع" },
+        "nav.download": { en: "Download", fr: "Télécharger", es: "Descargar", ha: "Sauke", yo: "Gba sílẹ̀", de: "Herunterladen", ig: "Budata", ar: "تحميل" },
+        "nav.contact": { en: "Contact", fr: "Contact", es: "Contacto", ha: "Tuntuɓa", yo: "Kan sí", de: "Kontakt", ig: "Kpọtụrụ anyị", ar: "اتصل بنا" },
+        "nav.dashboard": { en: "Dashboard", fr: "Tableau de bord", es: "Panel", ha: "Dashboard", yo: "Dashboard", de: "Dashboard", ig: "Dashboard", ar: "لوحة التحكم" },
+        "nav.demo": { en: "Book a Demo", fr: "Réserver", es: "Reservar", ha: "Ajiye Demo", yo: "Forúkọsílẹ̀ Demo", de: "Demo buchen", ig: "Dee Demo", ar: "احجز عرضًا" },
+        "nav.login": { en: "Sign In", fr: "Connexion", es: "Iniciar sesión", ha: "Shiga", yo: "Wọlé", de: "Anmelden", ig: "Banye", ar: "تسجيل الدخول" },
+        "nav.register": { en: "Get Started", fr: "Commencer", es: "Empezar", ha: "Fara", yo: "Bẹ̀rẹ̀", de: "Loslegen", ig: "Bido", ar: "ابدأ الآن" },
+        "nav.logout": { en: "Sign Out", fr: "Déconnexion", es: "Cerrar sesión", ha: "Fita", yo: "Jáde", de: "Abmelden", ig: "Pụọ", ar: "تسجيل الخروج" },
         "hero.title": {
           en: 'We Build <span class="text-gradient">AI Systems</span> That Help Your Business Grow',
           fr: 'Nous construisons des <span class="text-gradient">systèmes IA</span> qui aident votre entreprise à croître',
@@ -110,17 +111,30 @@
         "cta.title": { en: "Let's Build Something That Works", fr: "Construisons quelque chose qui fonctionne", es: "Construyamos algo que funcione", ha: "Bari mu gina wani abu mai aiki", yo: "Jẹ́ ká kọ́ nǹkan tí ó ń ṣiṣẹ́", de: "Lassen Sie uns etwas bauen, das funktioniert" },
         "cta.start": { en: "Start a Project", fr: "Démarrer un Projet", es: "Iniciar un Proyecto", ha: "Fara aikin", yo: "Bẹ̀rẹ̀ Iṣẹ́", de: "Ein Projekt starten" },
         "cta.contact": { en: "Contact Us", fr: "Contactez-nous", es: "Contáctenos", ha: "Tuntuɓe mu", yo: "Kan sí wa", de: "Kontaktieren Sie uns" },
-        "chat.title": { en: "Orion Assistant", fr: "Assistant Orion", es: "Asistente Orion", ha: "Orion Assistant", yo: "Orion Assistant", de: "Orion Assistent" },
-        "chat.status": { en: "Online", fr: "En ligne", es: "En línea", ha: "Kan layin", yo: "Lórí ila", de: "Online" },
-        "chat.placeholder": { en: "Type a message...", fr: "Tapez un message...", es: "Escribe un mensaje...", ha: "Rubuta sako...", yo: "Tẹ ìfiránṣẹ́...", de: "Nachricht eingeben..." },
-        "chat.send": { en: "Send", fr: "Envoyer", es: "Enviar", ha: "Aika", yo: "Fi ranṣẹ́", de: "Senden" },
-        "common.back_home": { en: "Back to Home", fr: "Retour à l'accueil", es: "Volver al inicio", ha: "Komawa gida", yo: "Padà sí Ilé", de: "Zurück zur Startseite" },
-        "lang.english": { en: "English", fr: "Anglais", es: "Inglés", ha: "Turanci", yo: "Gẹ̀ẹ́sì", de: "Englisch" },
-        "lang.french": { en: "French", fr: "Français", es: "Francés", ha: "Faransanci", yo: "Faransé", de: "Französisch" },
-        "lang.spanish": { en: "Spanish", fr: "Espagnol", es: "Español", ha: "Spaniyanci", yo: "Sípáníìṣì", de: "Spanisch" },
-        "lang.hausa": { en: "Hausa", fr: "Haoussa", es: "Hausa", ha: "Hausa", yo: "Hausa", de: "Haussa" },
-        "lang.yoruba": { en: "Yoruba", fr: "Yoruba", es: "Yoruba", ha: "Yarbanci", yo: "Yorùbá", de: "Yoruba" },
-        "lang.german": { en: "German", fr: "Allemand", es: "Alemán", ha: "Jamusanci", yo: "Jámánì", de: "Deutsch" },
+        "chat.title": { en: "Orion Assistant", fr: "Assistant Orion", es: "Asistente Orion", ha: "Orion Assistant", yo: "Orion Assistant", de: "Orion Assistent", ig: "Orion Assistant", ar: "مساعد أوريون" },
+        "chat.status": { en: "Online", fr: "En ligne", es: "En línea", ha: "Kan layin", yo: "Lórí ila", de: "Online", ig: "Na ahịrị", ar: "متصل" },
+        "chat.placeholder": { en: "Type a message...", fr: "Tapez un message...", es: "Escribe un mensaje...", ha: "Rubuta sako...", yo: "Tẹ ìfiránṣẹ́...", de: "Nachricht eingeben...", ig: "Dee ozi...", ar: "اكتب رسالة..." },
+        "chat.send": { en: "Send", fr: "Envoyer", es: "Enviar", ha: "Aika", yo: "Fi ranṣẹ́", de: "Senden", ig: "Ziga", ar: "إرسال" },
+        "common.back_home": { en: "Back to Home", fr: "Retour à l'accueil", es: "Volver al inicio", ha: "Komawa gida", yo: "Padà sí Ilé", de: "Zurück zur Startseite", ig: "Laghachi Ụlọ", ar: "العودة للرئيسية" },
+        "lang.english": { en: "English", fr: "Anglais", es: "Inglés", ha: "Turanci", yo: "Gẹ̀ẹ́sì", de: "Englisch", ig: "Bekee", ar: "الإنجليزية" },
+        "lang.french": { en: "French", fr: "Français", es: "Francés", ha: "Faransanci", yo: "Faransé", de: "Französisch", ig: "Frenchi", ar: "الفرنسية" },
+        "lang.spanish": { en: "Spanish", fr: "Espagnol", es: "Español", ha: "Spaniyanci", yo: "Sípáníìṣì", de: "Spanisch", ig: "Spenishi", ar: "الإسبانية" },
+        "lang.hausa": { en: "Hausa", fr: "Haoussa", es: "Hausa", ha: "Hausa", yo: "Hausa", de: "Haussa", ig: "Hausa", ar: "الهوسا" },
+        "lang.yoruba": { en: "Yoruba", fr: "Yoruba", es: "Yoruba", ha: "Yarbanci", yo: "Yorùbá", de: "Yoruba", ig: "Yorùbá", ar: "اليوروبا" },
+        "lang.german": { en: "German", fr: "Allemand", es: "Alemán", ha: "Jamusanci", yo: "Jámánì", de: "Deutsch", ig: "Jamanị", ar: "الألمانية" },
+        "lang.igbo": { en: "Igbo", fr: "Igbo", es: "Igbo", ha: "Igbo", yo: "Igbo", de: "Igbo", ig: "Igbo", ar: "الإيغبو" },
+        "lang.arabic": { en: "Arabic", fr: "Arabe", es: "Árabe", ha: "Larabci", yo: "Lárúbáwá", de: "Arabisch", ig: "Araabịk", ar: "العربية" },
+        "login.title": { en: "Welcome Back", fr: "Bienvenue", es: "Bienvenido", ha: "Barka da komawa", yo: "Káàbọ̀ Padà", de: "Willkommen zurück", ig: "Nnọọ Ọzọ", ar: "مرحبًا بعودتك" },
+        "login.button": { en: "Sign In", fr: "Connexion", es: "Iniciar sesión", ha: "Shiga", yo: "Wọlé", de: "Anmelden", ig: "Banye", ar: "تسجيل الدخول" },
+        "login.no_account": { en: "Don't have an account?", fr: "Pas de compte ?", es: "¿No tienes cuenta?", ha: "Ba ku da asusu?", yo: "Kò ní àkọọ́lẹ̀?", de: "Noch kein Konto?", ig: "Enweghị akaụntụ?", ar: "ليس لديك حساب؟" },
+        "login.create": { en: "Create one free", fr: "Créez-en un gratuit", es: "Crea uno gratis", ha: "Ƙirƙiri kyauta", yo: "Ṣẹ̀dá ọ̀fẹ́ kan", de: "Kostenlos erstellen", ig: "Mepụta otu n'efu", ar: "أنشئ حسابًا مجانًا" },
+        "login.back_home": { en: "Back to Home", fr: "Retour à l'accueil", es: "Volver al inicio", ha: "Komawa gida", yo: "Padà sí Ilé", de: "Zurück zur Startseite", ig: "Laghachi Ụlọ", ar: "العودة للرئيسية" },
+        "register.title": { en: "Create Your Account", fr: "Créez votre compte", es: "Crea tu cuenta", ha: "Ƙirƙiri asusunku", yo: "Ṣẹ̀dá Àkọọ́lẹ̀ Rẹ", de: "Erstellen Sie Ihr Konto", ig: "Mepụta Akaụntụ Gị", ar: "أنشئ حسابك" },
+        "register.trial": { en: "14-Day Free Trial", fr: "Essai gratuit de 14 jours", es: "Prueba gratuita de 14 días", ha: "Gwaji kyauta na kwanaki 14", yo: "Ìdánwọ̀ Ọ̀fẹ́ Ọjọ́ 14", de: "14-Tage kostenlose Testversion", ig: "Nnwale N'efu Ụbọchị 14", ar: "تجربة مجانية لمدة 14 يومًا" },
+        "register.button": { en: "Create Account", fr: "Créer un compte", es: "Crear cuenta", ha: "Ƙirƙiri asusu", yo: "Ṣẹ̀dá Àkọọ́lẹ̀", de: "Konto erstellen", ig: "Mepụta Akaụntụ", ar: "إنشاء حساب" },
+        "dashboard.title": { en: "Dashboard", fr: "Tableau de bord", es: "Panel de control", ha: "Dashboard", yo: "Dashboard", de: "Dashboard", ig: "Dashboard", ar: "لوحة التحكم" },
+        "dashboard.upgrade": { en: "Upgrade Plan", fr: "Améliorer le plan", es: "Mejorar plan", ha: "Haɓaka tsari", yo: "Mú Ètò Rẹ Dàgbà", de: "Plan upgraden", ig: "Melite Atụmatụ", ar: "ترقية الخطة" },
+        "dashboard.save": { en: "Save Changes", fr: "Sauvegarder", es: "Guardar cambios", ha: "Ajiye canje-canje", yo: "Fipamọ́ Àwọn Ìyípadà", de: "Änderungen speichern", ig: "Chekwaa Mgbanwe", ar: "حفظ التغييرات" },
         "why.subtitle": { en: "We don't just write code. We build systems that solve real problems.", fr: "Nous n'écrivons pas seulement du code. Nous construisons des systèmes qui résolvent de vrais problèmes.", es: "No solo escribimos código.", ha: "Ba mu kawai rubuta code ba.", yo: "A kì í kọ kóòdù nìkan.", de: "Wir schreiben nicht nur Code." },
         "why.1.desc": { en: "Every solution is designed to work as a complete system.", fr: "Chaque solution est conçue comme un système complet.", es: "Cada solución es un sistema completo.", ha: "Kowane mafita tsari ne cikakke.", yo: "Gbogbo ojutu ètò kíkún ni.", de: "Jede Lösung ist ein komplettes System." },
         "why.2.desc": { en: "We use AI to make your systems smarter from day one.", fr: "Nous utilisons l'IA dès le premier jour.", es: "Usamos IA desde el primer día.", ha: "Muna amfani da AI tun daga rana ta farko.", yo: "A ń lò AI láti ọjọ́ àkọ́kọ́.", de: "Wir nutzen KI vom ersten Tag an." },
@@ -210,8 +224,15 @@
         }
       });
 
-      // 5. Update html lang attribute
+      // 5. Update html lang attribute and RTL direction
       document.documentElement.lang = this.currentLang;
+      if (RTL_LANGS.includes(this.currentLang)) {
+        document.documentElement.setAttribute("dir", "rtl");
+        document.body && document.body.classList.add("rtl");
+      } else {
+        document.documentElement.setAttribute("dir", "ltr");
+        document.body && document.body.classList.remove("rtl");
+      }
     },
 
     // ---- Language switcher binding ----
@@ -263,7 +284,7 @@
       // Update button label
       const btn = document.getElementById("langSwitcherBtn");
       if (btn) {
-        const labels = { en: "EN", fr: "FR", es: "ES", ha: "HA", yo: "YO", de: "DE" };
+        const labels = { en: "EN", fr: "FR", es: "ES", ha: "HA", yo: "YO", de: "DE", ig: "IG", ar: "AR" };
         btn.textContent = labels[this.currentLang] || "EN";
       }
 

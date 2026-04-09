@@ -28,7 +28,7 @@ router.get("/", (req, res) => {
 
   // Return all translations
   res.json({
-    supportedLanguages: ["en", "fr", "es", "ha", "yo", "de"],
+    supportedLanguages: ["en", "fr", "es", "ha", "yo", "de", "ig", "ar"],
     totalKeys: Object.keys(translations).length,
     translations
   });
@@ -64,7 +64,9 @@ router.get("/languages", (req, res) => {
       { code: "es", name: "Spanish", native: "Español" },
       { code: "ha", name: "Hausa", native: "Hausa" },
       { code: "yo", name: "Yoruba", native: "Yorùbá" },
-      { code: "de", name: "German", native: "Deutsch" }
+      { code: "de", name: "German", native: "Deutsch" },
+      { code: "ig", name: "Igbo", native: "Igbo" },
+      { code: "ar", name: "Arabic", native: "العربية", rtl: true }
     ],
     default: "en"
   });

@@ -11,7 +11,7 @@
   // CONFIGURATION
   // ========================================
   const CONFIG = {
-    apiUrl: localStorage.getItem("apiUrl") || "http://localhost:5000/api",
+    apiUrl: localStorage.getItem("apiUrl") || "/api",
     // Fallback responses when API is unavailable
     fallbackResponses: [
       "Thank you for your interest! Our AI consultant will be with you shortly. In the meantime, feel free to book a demo at our contact page.",
