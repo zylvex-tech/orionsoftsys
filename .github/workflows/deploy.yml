@@ -1,0 +1,128 @@
+# ============================================================
+# GitHub Actions — Deploy to cPanel (orionsoftsystems.com.ng)
+# Triggers on every push to the `main` branch.
+# Uses SSH + rsync to push files to cPanel, then restarts the
+# Node.js process with PM2.
+#
+# Required GitHub Secrets (Settings → Secrets → Actions):
+#   CPANEL_SSH_HOST         – server hostname / IP
+#   CPANEL_SSH_PORT         – SSH port (default 22; cPanel often uses 2222)
+#   CPANEL_SSH_USERNAME     – cPanel account username
+#   CPANEL_SSH_PRIVATE_KEY  – contents of ~/.ssh/id_rsa (private key)
+#   DEPLOY_PATH             – absolute path on server, e.g. /home/username/orionsoftsystems.com.ng
+#   ENV_FILE                – full contents of your production .env file
+# ============================================================
+
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:   # allows manual trigger from GitHub UI
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false   # never cancel an in-flight deploy
+
+env:
+  NODE_VERSION: "18"
+
+jobs:
+  # ── 1. Validate ─────────────────────────────────────────────
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+  # ── 2. Deploy ───────────────────────────────────────────────
+  deploy:
+    name: Deploy to Production
+    needs: validate
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      # Install only production deps locally so they are synced to server
+      - name: Install production dependencies
+        run: npm ci --omit=dev
+
+      # Write the production .env file (stored as a GitHub Secret)
+      # This file is NEVER committed to git — only injected at deploy time.
+      - name: Write .env file
+        run: echo "${{ secrets.ENV_FILE }}" > .env
+
+      # Sync all project files to the cPanel server over SSH/rsync.
+      # Excluded: .git, .github, dev-only files, and the .env source template.
+      - name: Sync files to cPanel via rsync over SSH
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: >-
+            -avzr
+            --delete
+            --exclude='.git'
+            --exclude='.github'
+            --exclude='*.log'
+            --exclude='server/.env.example'
+            --exclude='.qwen'
+            --exclude='render.yaml'
+          path: ./
+          remote_path: ${{ secrets.DEPLOY_PATH }}
+          remote_host: ${{ secrets.CPANEL_SSH_HOST }}
+          remote_port: ${{ secrets.CPANEL_SSH_PORT }}
+          remote_user: ${{ secrets.CPANEL_SSH_USERNAME }}
+          remote_key: ${{ secrets.CPANEL_SSH_PRIVATE_KEY }}
+
+      # SSH into the server, install dependencies, and (re)start via PM2.
+      - name: Install server deps and restart app with PM2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.CPANEL_SSH_HOST }}
+          username: ${{ secrets.CPANEL_SSH_USERNAME }}
+          key: ${{ secrets.CPANEL_SSH_PRIVATE_KEY }}
+          port: ${{ secrets.CPANEL_SSH_PORT }}
+          script: |
+            set -e
+
+            echo "📂 Entering deploy directory..."
+            cd "${{ secrets.DEPLOY_PATH }}"
+
+            echo "📦 Installing production Node.js dependencies..."
+            npm ci --omit=dev --prefer-offline
+
+            echo "🔄 Restarting application with PM2..."
+            if pm2 list | grep -q "orion-saas"; then
+              pm2 restart orion-saas --update-env
+            else
+              pm2 start ecosystem.config.js --env production
+            fi
+
+            pm2 save
+
+            echo ""
+            echo "✅ Deployment complete!"
+            echo "🌐 Live at: https://orionsoftsystems.com.ng"
+            echo "🔌 Health:  https://orionsoftsystems.com.ng/api/health"

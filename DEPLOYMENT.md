@@ -5,9 +5,9 @@
 ```
 Frontend (Static HTML/CSS/JS)
         ↓ HTTP/API
-Backend (Node.js + Express)
+Backend (Node.js + Express)  ← served on same domain via cPanel Node.js + .htaccess
         ↓
-MongoDB (Database)
+PostgreSQL (Database)
         ↓
 OpenAI API → DeepSeek API (fallback)
         ↓
@@ -19,9 +19,160 @@ Paystack / Stripe (Billing)
 ## 📋 Prerequisites
 
 1. **Node.js** >= 18.0.0
-2. **MongoDB** (local or Atlas)
+2. **PostgreSQL** (local or managed — e.g. Supabase, Neon, Railway)
 3. **OpenAI API key** (https://platform.openai.com)
 4. **Paystack account** (https://paystack.com) or **Stripe account** (https://stripe.com)
+
+---
+
+## 🏭 Production Deployment — cPanel (orionsoftsystems.com.ng)
+
+This is the primary production setup using GitHub Actions → SSH → cPanel + PM2.
+
+---
+
+### Step 1 — cPanel: Enable Node.js & SSH Access
+
+1. Log in to cPanel (`https://orionsoftsystems.com.ng:2083`).
+2. Open **Setup Node.js App** (or **Node.js Selector**).
+   - Create a new app, set **Node.js version ≥ 18**, root = the deploy directory.
+3. Open **SSH Access** → generate or upload an SSH key pair.
+   - If generating: copy the **private key** — you'll add it to GitHub.
+   - If uploading your own: paste the **public key** into cPanel.
+4. Note your **SSH port** — cPanel typically uses **port 22** or **2222**.
+5. Note the **absolute path** of your app directory, e.g.
+   `/home/yourusername/orionsoftsystems.com.ng`
+
+---
+
+### Step 2 — cPanel: Create the `.htaccess` Proxy
+
+In the domain's public root (or via **File Manager**), create/edit `.htaccess`:
+
+```apache
+# Route /api/* and all other requests to the Node.js backend on port 5000
+RewriteEngine On
+RewriteRule ^(.*)$ http://127.0.0.1:5000/$1 [P,L]
+```
+
+> **Note:** This proxies everything through the Node.js app.
+> The Express server already serves static files from the repo root, so
+> the frontend and API are both handled by Node.js.
+
+---
+
+### Step 3 — Create the Production `.env` File on the Server
+
+SSH into the server:
+
+```bash
+ssh -p 2222 yourusername@orionsoftsystems.com.ng
+cd /home/yourusername/orionsoftsystems.com.ng
+nano .env
+```
+
+Paste your production values (see [Environment Variables](#-environment-variables) below).
+**Never commit this file to git.**
+
+---
+
+### Step 4 — GitHub Secrets Setup
+
+Go to **GitHub → Repository → Settings → Secrets and variables → Actions** and add:
+
+| Secret name              | Value                                                     |
+|--------------------------|-----------------------------------------------------------|
+| `CPANEL_SSH_HOST`        | `orionsoftsystems.com.ng` (or server IP)                  |
+| `CPANEL_SSH_PORT`        | `22` or `2222` (check with your host)                     |
+| `CPANEL_SSH_USERNAME`    | Your cPanel username                                      |
+| `CPANEL_SSH_PRIVATE_KEY` | Full contents of the private key (`~/.ssh/id_rsa`)        |
+| `DEPLOY_PATH`            | `/home/yourusername/orionsoftsystems.com.ng`              |
+| `ENV_FILE`               | Full contents of your production `.env` file (multi-line) |
+
+> **How to add a multi-line secret (`ENV_FILE`):**
+> Copy the entire `.env` file content, paste it as the secret value.
+> GitHub stores it securely and the workflow writes it to `.env` at deploy time.
+
+---
+
+### Step 5 — PM2: First-time Setup on the Server
+
+SSH in and install PM2 globally once:
+
+```bash
+npm install -g pm2
+
+# Start the app manually the first time
+cd /home/yourusername/orionsoftsystems.com.ng
+pm2 start ecosystem.config.js --env production
+pm2 save
+
+# (Optional) auto-start PM2 on server reboot
+pm2 startup
+# Run the command it outputs, e.g.:
+# sudo env PATH=$PATH:/usr/bin pm2 startup systemd -u yourusername --hp /home/yourusername
+```
+
+---
+
+### Step 6 — Push to `main` and Watch It Deploy
+
+```bash
+git add .
+git commit -m "chore: initial production deploy"
+git push origin main
+```
+
+GitHub Actions will:
+1. ✅ Validate (install deps + run tests)
+2. 📦 Install production dependencies
+3. 🔐 Write `.env` from the `ENV_FILE` secret
+4. 📂 rsync all files to the cPanel server over SSH
+5. 🔄 Run `npm ci --omit=dev` on server
+6. 🚀 Restart via `pm2 restart orion-saas --update-env`
+
+Watch the run at: `https://github.com/zylvex-tech/orionsoftsys/actions`
+
+---
+
+### Step 7 — Deployment Verification Checklist
+
+- [ ] `https://orionsoftsystems.com.ng` loads `index.html`
+- [ ] `https://orionsoftsystems.com.ng/api/health` returns `{"status":"ok"}`
+- [ ] `https://orionsoftsystems.com.ng/api/test-db` returns a database timestamp
+- [ ] Login at `/login.html` succeeds and JWT is issued
+- [ ] Dashboard at `/dashboard.html` loads user data via API
+- [ ] PM2 shows app as `online`: run `pm2 list` on server
+- [ ] No `.env` file visible in GitHub repository
+- [ ] HTTPS padlock visible in browser (SSL active via cPanel AutoSSL)
+
+---
+
+### Manual Deploy (bypass GitHub Actions)
+
+SSH in and run:
+
+```bash
+cd /home/yourusername/orionsoftsystems.com.ng
+git pull origin main
+npm ci --omit=dev
+pm2 restart orion-saas --update-env
+```
+
+---
+
+### Useful PM2 Commands
+
+```bash
+pm2 list                        # list all processes
+pm2 logs orion-saas             # tail live logs
+pm2 logs orion-saas --lines 200 # last 200 log lines
+pm2 monit                       # real-time dashboard
+pm2 restart orion-saas          # restart app
+pm2 stop orion-saas             # stop app
+pm2 delete orion-saas           # remove from PM2
+pm2 reload orion-saas           # zero-downtime reload (cluster mode)
+```
 
 ---
 
