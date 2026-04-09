@@ -27,6 +27,9 @@ concurrency:
 
 env:
   NODE_VERSION: "18"
+  PRODUCTION_URL: "https://orionsoftsystems.com.ng"
+  HEALTH_CHECK_RETRIES: "5"
+  HEALTH_CHECK_TIMEOUT: "10"
 
 jobs:
   # ── 1. Validate ─────────────────────────────────────────────
@@ -132,24 +135,24 @@ jobs:
 
             echo ""
             echo "✅ Deployment complete!"
-            echo "🌐 Live at: https://orionsoftsystems.com.ng"
-            echo "🔌 Health:  https://orionsoftsystems.com.ng/api/health"
+            echo "🌐 Live at: ${{ env.PRODUCTION_URL }}"
+            echo "🔌 Health:  ${{ env.PRODUCTION_URL }}/api/health"
 
       # Verify the app is responding after deploy.
-      # Retries up to 5 times with a 10-second back-off before failing.
+      # Retries up to HEALTH_CHECK_RETRIES times with HEALTH_CHECK_TIMEOUT-second back-off.
       - name: Health check
         run: |
           echo "⏳ Waiting for app to become healthy..."
-          for i in $(seq 1 5); do
+          for i in $(seq 1 ${{ env.HEALTH_CHECK_RETRIES }}); do
             STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-              --max-time 10 \
-              https://orionsoftsystems.com.ng/api/health || echo "000")
+              --max-time ${{ env.HEALTH_CHECK_TIMEOUT }} \
+              ${{ env.PRODUCTION_URL }}/api/health || echo "000")
             echo "  Attempt $i: HTTP $STATUS"
             if [ "$STATUS" = "200" ]; then
               echo "✅ Health check passed!"
               exit 0
             fi
-            sleep 10
+            sleep ${{ env.HEALTH_CHECK_TIMEOUT }}
           done
-          echo "❌ Health check failed after 5 attempts"
+          echo "❌ Health check failed after ${{ env.HEALTH_CHECK_RETRIES }} attempts"
           exit 1

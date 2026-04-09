@@ -129,7 +129,7 @@ GitHub Actions will:
 3. 🔐 Write `.env` from the `ENV_FILE` secret
 4. 📂 rsync all files to the cPanel server over SSH
 5. 🔄 Run `npm ci --omit=dev` on server
-6. 🚀 Restart via `pm2 restart orion-saas --update-env`
+6. 🚀 Zero-downtime reload via `pm2 reload orion-saas --update-env`
 
 Watch the run at: `https://github.com/zylvex-tech/orionsoftsys/actions`
 
@@ -156,7 +156,7 @@ SSH in and run:
 cd /home/yourusername/orionsoftsystems.com.ng
 git pull origin main
 npm ci --omit=dev
-pm2 restart orion-saas --update-env
+pm2 reload orion-saas --update-env
 ```
 
 ---
@@ -168,7 +168,7 @@ pm2 list                        # list all processes
 pm2 logs orion-saas             # tail live logs
 pm2 logs orion-saas --lines 200 # last 200 log lines
 pm2 monit                       # real-time dashboard
-pm2 restart orion-saas          # restart app
+pm2 reload orion-saas           # zero-downtime rolling reload (cluster mode)
 pm2 stop orion-saas             # stop app
 pm2 delete orion-saas           # remove from PM2
 pm2 reload orion-saas           # zero-downtime reload (cluster mode)
