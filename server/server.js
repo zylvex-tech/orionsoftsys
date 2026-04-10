@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
-const fs = require("fs");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
@@ -38,7 +37,7 @@ app.use(morgan("dev"));
 // CORS
 const corsOrigins = process.env.FRONTEND_URL
   ? [process.env.FRONTEND_URL]
-  : true;
+  : ["http://localhost:3000", "http://localhost:5000"];
 
 app.use(
   cors({
@@ -49,7 +48,9 @@ app.use(
   })
 );
 
-// Body parsing
+// Body parsing — Paystack webhook needs the raw body for HMAC verification;
+// register it BEFORE express.json() so the buffer is preserved for that path.
+app.use("/api/billing/webhook/paystack", express.raw({ type: "application/json" }));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
@@ -107,16 +108,10 @@ app.use("/api/translate", translateRoutes);
 app.use("/api/users", require("./routes/users"));
 
 // ==================== SPA FALLBACK ====================
+// express.static (above) handles all real files.
+// Anything that reaches here is an SPA route → serve index.html.
 app.get("*", (req, res, next) => {
   if (req.path.startsWith("/api")) return next();
-
-  const filePath = path.join(frontendDir, req.path);
-  const exists = fs.existsSync(filePath);
-
-  if (exists && !filePath.includes("..")) {
-    return next();
-  }
-
   res.sendFile(path.join(frontendDir, "index.html"));
 });
 

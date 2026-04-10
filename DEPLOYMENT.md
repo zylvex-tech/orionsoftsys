@@ -7,7 +7,7 @@ Frontend (Static HTML/CSS/JS)
         ↓ HTTP/API
 Backend (Node.js + Express)
         ↓
-MongoDB (Database)
+PostgreSQL (Database)
         ↓
 OpenAI API → DeepSeek API (fallback)
         ↓
@@ -19,7 +19,7 @@ Paystack / Stripe (Billing)
 ## 📋 Prerequisites
 
 1. **Node.js** >= 18.0.0
-2. **MongoDB** (local or Atlas)
+2. **PostgreSQL** (local or managed, e.g. Render, Supabase, Railway)
 3. **OpenAI API key** (https://platform.openai.com)
 4. **Paystack account** (https://paystack.com) or **Stripe account** (https://stripe.com)
 
@@ -147,7 +147,7 @@ sudo certbot --nginx -d api.yourdomain.com
 |----------|-------------|---------|
 | `PORT` | Server port | `5000` |
 | `NODE_ENV` | Environment | `production` |
-| `MONGODB_URI` | MongoDB connection | `mongodb+srv://...` |
+| `DATABASE_URL` | PostgreSQL connection string | `postgresql://user:pass@host:5432/orion_saas` |
 | `JWT_SECRET` | JWT signing key (32+ chars) | `random-string-here` |
 | `OPENAI_API_KEY` | OpenAI API key | `sk-...` |
 | `OPENAI_MODEL` | OpenAI model | `gpt-4o-mini` |
@@ -158,6 +158,7 @@ sudo certbot --nginx -d api.yourdomain.com
 | `STRIPE_SECRET_KEY` | Stripe secret | `sk_live_...` |
 | `STRIPE_WEBHOOK_SECRET` | Stripe webhook secret | `whsec_...` |
 | `FRONTEND_URL` | Frontend origin (CORS) | `https://yourdomain.com` |
+| `ADMIN_EMAIL` | Email address with admin access | `admin@example.com` |
 
 ---
 
@@ -187,11 +188,12 @@ sudo certbot --nginx -d api.yourdomain.com
 - [ ] Change `JWT_SECRET` to a random 32+ character string
 - [ ] Use HTTPS in production
 - [ ] Set `NODE_ENV=production`
-- [ ] Enable CORS only for your frontend domain
+- [ ] Set `FRONTEND_URL` to your exact frontend domain (CORS)
 - [ ] Keep API keys secret (never commit `.env`)
-- [ ] Set up MongoDB with authentication
+- [ ] Set up PostgreSQL with authentication and SSL
 - [ ] Enable rate limiting (already configured)
-- [ ] Set up regular backups of MongoDB
+- [ ] Set up regular backups of PostgreSQL database
+- [ ] Register Paystack webhook URL in Paystack dashboard
 
 ---
 
@@ -199,7 +201,7 @@ sudo certbot --nginx -d api.yourdomain.com
 
 Recommended tools:
 - **PM2** for process management
-- **MongoDB Atlas** for managed database with monitoring
+- **Render / Railway / Supabase** for managed PostgreSQL with monitoring
 - **Sentry** for error tracking
 - **UptimeRobot** for uptime monitoring
 
@@ -220,9 +222,9 @@ Recommended tools:
 
 ## 🐛 Troubleshooting
 
-**"MongoDB connection error"**
-- Check `MONGODB_URI` is correct
-- Ensure MongoDB is running (`mongod`)
+**"PostgreSQL connection error"**
+- Check `DATABASE_URL` is correct
+- Ensure PostgreSQL is running
 - Check firewall allows connection
 
 **"Token expired" errors**

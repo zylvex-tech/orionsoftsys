@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const billingService = require("../services/billingService");
 
@@ -177,7 +178,21 @@ router.post("/cancel", async (req, res, next) => {
 
 // ==================== PAYSTACK WEBHOOK ====================
 router.post("/webhook/paystack", async (req, res) => {
-  const event = req.body;
+  // Verify Paystack signature
+  const secret = process.env.PAYSTACK_SECRET_KEY;
+  if (!secret) {
+    console.error("PAYSTACK_SECRET_KEY not set – cannot verify webhook signature");
+    return res.status(500).send("Server misconfiguration");
+  }
+  const hash = crypto
+    .createHmac("sha512", secret)
+    .update(req.body)
+    .digest("hex");
+  if (hash !== req.headers["x-paystack-signature"]) {
+    return res.status(400).send("Invalid signature");
+  }
+
+  const event = JSON.parse(req.body.toString());
 
   if (event.event === "charge.success") {
     const data = event.data;
